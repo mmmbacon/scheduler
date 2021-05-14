@@ -1,4 +1,22 @@
 {
-  "extends": "react-app",
-  "parser": "babel-eslint"
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "extends": [
+    "react-app",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  }
 }
