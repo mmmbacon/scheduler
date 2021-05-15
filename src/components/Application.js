@@ -26,17 +26,17 @@ export default function Application(props) {
       axios
         .get("/api/days")
         .then((res) => res.data)
-        .catch((err) => console.log(err)),
+        .catch((err) => err),
       //Fetch appointments
       axios
         .get("/api/appointments")
         .then((res) => res.data)
-        .catch((err) => console.log(err)),
+        .catch((err) => err),
       //Fetch interviewers
       axios
         .get("/api/interviewers")
         .then((res) => res.data)
-        .catch((err) => console.log(err)),
+        .catch((err) => err),
     ]).then((all) => {
       setState((prev) => ({
         ...prev,
@@ -57,15 +57,14 @@ export default function Application(props) {
       [id]: appointment,
     };
 
+    setState({ ...state, appointments });
+
     return axios
       .put(`/api/appointments/${id}`, {
         interview,
       })
-      .then((res) => {
-        setState({ ...state, appointments });
-        return res;
-      })
-      .catch((err) => console.log(err));
+      .then((res) => res);
+    //.catch((err) => err);
   };
 
   const cancelInterview = function (id, interview) {
@@ -78,13 +77,10 @@ export default function Application(props) {
       [id]: appointment,
     };
 
-    return axios
-      .delete(`/api/appointments/${id}`)
-      .then((res) => {
-        setState({ ...state, appointments });
-        return res;
-      })
-      .catch((err) => console.log(err));
+    setState({ ...state, appointments });
+
+    return axios.delete(`/api/appointments/${id}`).then((res) => res);
+    //.catch((err) => err);
   };
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);

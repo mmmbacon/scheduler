@@ -28,14 +28,6 @@ export default function Form(props) {
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
-  const setNameField = function (nameField) {
-    setName(nameField);
-  };
-
-  const setInterviewerField = function (interviewerField) {
-    setInterviewer(interviewerField);
-  };
-
   const reset = function () {
     setName("");
     setInterviewer(null);
@@ -54,16 +46,16 @@ export default function Form(props) {
             className="appointment__create-input text--semi-bold"
             name={name}
             type="text"
-            placeholder="Enter Student Name"
+            placeholder={name || "Enter Student Name"}
             onChange={(event) => {
-              setNameField(event.target.value);
+              setName(event.target.value);
             }}
           />
         </form>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChange={setInterviewerField}
+          onChange={setInterviewer}
         />
       </section>
       <section className="appointment__card-right">
