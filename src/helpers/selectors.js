@@ -41,3 +41,33 @@ export const getInterview = function (state, interviewItem) {
 
   return interview;
 };
+
+export const getSpotsForDay = function (state, dayName) {
+  let count = 0;
+  const dayAppointments = getAppointmentsForDay(state, dayName);
+
+  for (const day of state.days) {
+    if (day.name === dayName) {
+      for (const app of day.appointments) {
+        for (const app2 of dayAppointments) {
+          if (app2.id === app) {
+            if (app2.interview === null) {
+              count++;
+            }
+          }
+        }
+      }
+    }
+  }
+  return count;
+};
+
+export const getDayIndex = function (state, dayName) {
+  let index = undefined;
+  for (const i in state.days) {
+    if (state.days[i].name === dayName) {
+      index = i;
+    }
+  }
+  return index;
+};
