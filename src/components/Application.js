@@ -14,13 +14,12 @@ import DayList from "components/DayList";
 import Appointment from "components/Appointments";
 
 export default function Application(props) {
-  const { state, setDay, bookInterview, cancelInterview, getSpots } =
-    useApplicationData({
-      day: "Monday",
-      appointments: [],
-      interviews: {},
-      days: [],
-    });
+  const { state, setDay, bookInterview, cancelInterview } = useApplicationData({
+    day: "Monday",
+    appointments: [],
+    interviews: {},
+    days: [],
+  });
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
