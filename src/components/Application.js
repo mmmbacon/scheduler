@@ -13,7 +13,7 @@ import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointments";
 
-export default function Application(props) {
+export default function Application() {
   const { state, setDay, bookInterview, cancelInterview } = useApplicationData({
     day: "Monday",
     appointments: [],
