@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import "./InterviewerList.scss";
-import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import InterviewerListItem from "./InterviewerListItem";

@@ -1,3 +1,9 @@
+/**
+ * Will return all appointments for a given day in an unsorted array
+ * @param {object} state The entire state object
+ * @param {string} dayName The day for which to get appointments
+ * @returns {array} Array containing appointments
+ */
 export function getAppointmentsForDay(state, dayName) {
   const appointments = [];
 
@@ -13,6 +19,12 @@ export function getAppointmentsForDay(state, dayName) {
   return appointments;
 }
 
+/**
+ * Will return all interviewers for a given day in an unsorted array
+ * @param {object} state The entire state object
+ * @param {string} dayName The day for which to get interviewers
+ * @returns {array} Array containing interviewers
+ */
 export function getInterviewersForDay(state, dayName) {
   const interviewers = [];
 
@@ -28,6 +40,12 @@ export function getInterviewersForDay(state, dayName) {
   return interviewers;
 }
 
+/**
+ * Returns the interviewer object from the given interview index
+ * @param {object} state The entire state object
+ * @param {string} interviewItem the interview item index
+ * @returns {object} Object containing the individual interviewer
+ */
 export const getInterview = function (state, interviewItem) {
   let interview = null;
 
@@ -42,6 +60,12 @@ export const getInterview = function (state, interviewItem) {
   return interview;
 };
 
+/**
+ * Returns the total amount of spots available for the given day
+ * @param {object} state The entire state object
+ * @param {string} dayName The day to check
+ * @returns {number} Number of spots available
+ */
 export const getSpotsForDay = function (state, dayName) {
   let count = 0;
   const dayAppointments = getAppointmentsForDay(state, dayName);
@@ -62,6 +86,12 @@ export const getSpotsForDay = function (state, dayName) {
   return count;
 };
 
+/**
+ * Returns the index for a given day
+ * @param {object} state The entire state object
+ * @param {string} dayName The given day
+ * @returns {number} The index of the day
+ */
 export const getDayIndex = function (state, dayName) {
   let index = undefined;
   for (const i in state.days) {

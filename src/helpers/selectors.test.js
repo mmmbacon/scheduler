@@ -53,10 +53,6 @@ const state = {
   },
 };
 
-/*
-getAppointmentsForDay
-TESTS
-*/
 test("getAppointmentsForDay returns an array", () => {
   const result = getAppointmentsForDay(state, "Monday");
   expect(Array.isArray(result)).toBe(true);
@@ -102,10 +98,6 @@ test("getInterview returns null if no interview is booked", () => {
   expect(result).toBeNull();
 });
 
-/*
-getInterviewersForDay
-TESTS
-*/
 test("getInterviewersForDay returns an array", () => {
   const result = getInterviewersForDay(state, "Monday");
   expect(Array.isArray(result)).toBe(true);

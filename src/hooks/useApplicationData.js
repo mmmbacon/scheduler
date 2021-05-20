@@ -35,7 +35,6 @@ export default function useApplicationData(initial) {
   const SET_INTERVIEW = "SET_INTERVIEW";
 
   useEffect(() => {
-    //let mounted = true;
     Promise.all([
       //Fetch days
       axios
@@ -58,9 +57,6 @@ export default function useApplicationData(initial) {
         value: { days: all[0], appointments: all[1], interviewers: all[2] },
       });
     });
-    // return function cleanup() {
-    //   mounted = false;
-    // };
   }, []);
 
   const setDay = function (day) {
