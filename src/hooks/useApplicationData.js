@@ -1,8 +1,6 @@
 import { useReducer, useEffect, useRef } from "react";
 import axios from "axios";
 
-import { getSpotsForDay, getDayIndex } from "../helpers/selectors";
-
 const reducer = function (state, action) {
   switch (action.type) {
     case "SET_DAY":
@@ -18,7 +16,7 @@ const reducer = function (state, action) {
       return {
         ...state,
         appointments: action.value.appointments,
-        days: action.value.days,
+        days: getDays(state, state.day, action.value.appointments),
       };
     default:
       throw new Error(
@@ -26,6 +24,23 @@ const reducer = function (state, action) {
       );
   }
 };
+
+function getDays(state, day, appointments) {
+  return state.days.map((item) => {
+    let count = 0;
+
+    for (const app of item.appointments) {
+      if (appointments[app].interview === null) {
+        count++;
+      }
+    }
+
+    return {
+      ...item,
+      spots: count,
+    };
+  });
+}
 
 export default function useApplicationData(initial) {
   const [state, dispatch] = useReducer(reducer, initial);
@@ -35,11 +50,6 @@ export default function useApplicationData(initial) {
   const SET_INTERVIEW = "SET_INTERVIEW";
 
   const ws = useRef(null);
-  let wsURL = "ws://localhost:8001";
-
-  if (process.env.REACT_APP_WEBSOCKET_URL) {
-    wsURL = process.env.REACT_APP_WEBSOCKET_URL;
-  }
 
   useEffect(() => {
     Promise.all([
@@ -67,7 +77,7 @@ export default function useApplicationData(initial) {
   }, []);
 
   useEffect(() => {
-    ws.current = new WebSocket(wsURL);
+    ws.current = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     ws.current.onopen = () => {};
 
     return () => {
@@ -81,9 +91,6 @@ export default function useApplicationData(initial) {
       const message = JSON.parse(event.data);
 
       if (message.type === "SET_INTERVIEW") {
-        const dayIndex = getDayIndex(state, state.day);
-        const spots = getSpotsForDay(state, state.day);
-
         //Update Appointment
         //Create copy of selected appointment by ID
         const appointment = {
@@ -96,31 +103,29 @@ export default function useApplicationData(initial) {
           [message.id]: appointment,
         };
 
-        //Update Days
-        //Create copy of selected day by index
-        const day = {
-          ...state.days[dayIndex],
-          spots: message.interview === null ? spots + 1 : spots - 1,
-        };
-        //Create copy of days and insert new day
-        const days = [...state.days];
-        days[dayIndex] = day;
+        // //Update Days
+        // //Create copy of selected day by index
+        // const day = {
+        //   ...state.days[dayIndex],
+        //   spots: message.interview === null ? spots + 1 : spots - 1,
+        // };
+        // //Create copy of days and insert new day
+        // const days = [...state.days];
+        // days[dayIndex] = day;
 
         dispatch({
           type: SET_INTERVIEW,
-          value: { appointments: appointments, days: days },
+          value: { appointments: appointments },
         });
       }
     };
   });
+
   const setDay = function (day) {
     dispatch({ type: SET_DAY, value: day });
   };
 
   const bookInterview = function (id, interview) {
-    const dayIndex = getDayIndex(state, state.day);
-    const spots = getSpotsForDay(state, state.day);
-
     //Update Appointment
     //Create copy of selected appointment by ID
     const appointment = {
@@ -132,16 +137,6 @@ export default function useApplicationData(initial) {
       [id]: appointment,
     };
 
-    //Update Days
-    //Create copy of selected day by index
-    const day = {
-      ...state.days[dayIndex],
-      spots: spots - 1,
-    };
-    //Create copy of days and insert new day
-    const days = [...state.days];
-    days[dayIndex] = day;
-
     return axios
       .put(`/api/appointments/${id}`, {
         interview,
@@ -149,7 +144,7 @@ export default function useApplicationData(initial) {
       .then((res) => {
         dispatch({
           type: SET_INTERVIEW,
-          value: { appointments: appointments, days: days },
+          value: { appointments: appointments },
         });
         //setState({ ...state, appointments, days });
         return res;
@@ -157,9 +152,6 @@ export default function useApplicationData(initial) {
   };
 
   const cancelInterview = function (id, interview) {
-    const dayIndex = getDayIndex(state, state.day);
-    const spots = getSpotsForDay(state, state.day);
-
     //Update Appointment
     //Create copy of selected appointment by ID
     const appointment = {
@@ -171,20 +163,10 @@ export default function useApplicationData(initial) {
       [id]: appointment,
     };
 
-    //Update Days
-    //Create copy of selected day by index
-    const day = {
-      ...state.days[dayIndex],
-      spots: spots + 1,
-    };
-    //Creata copy of days and insert new day
-    const days = [...state.days];
-    days[dayIndex] = day;
-
     return axios.delete(`/api/appointments/${id}`).then((res) => {
       dispatch({
         type: SET_INTERVIEW,
-        value: { appointments: appointments, days: days },
+        value: { appointments: appointments },
       });
       //setState({ ...state, appointments, days });
       return res;
@@ -196,6 +178,5 @@ export default function useApplicationData(initial) {
     setDay,
     bookInterview,
     cancelInterview,
-    getSpotsForDay,
   };
 }
