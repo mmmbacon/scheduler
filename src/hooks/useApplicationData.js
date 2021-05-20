@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useCallback, useRef } from "react";
+import { useReducer, useEffect, useRef } from "react";
 import axios from "axios";
 
 import { getSpotsForDay, getDayIndex } from "../helpers/selectors";
@@ -35,6 +35,11 @@ export default function useApplicationData(initial) {
   const SET_INTERVIEW = "SET_INTERVIEW";
 
   const ws = useRef(null);
+  let wsURL = "ws://localhost:8001";
+
+  if (process.env.REACT_APP_WEBSOCKET_URL) {
+    wsURL = process.env.REACT_APP_WEBSOCKET_URL;
+  }
 
   useEffect(() => {
     Promise.all([
