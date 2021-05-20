@@ -5,7 +5,7 @@ This interview scheduler was created during my enrollment in the Lighthouse Labs
 This project should help highlight my knowledge and practical application of all of the above mentioned technologies. 
 
 
-## [View the Netlify Deployment](https://scheduler-app-mmmbacon.netlify.app/)
+## [https://scheduler-app-mmmbacon.netlify.app/](https://scheduler-app-mmmbacon.netlify.app/)
 This app has been deployed using a personal use license. If you visit this site and there is no content, please give it a few seconds and the site will become active. This is a restriction on the license type.
 
 ## Local Setup
