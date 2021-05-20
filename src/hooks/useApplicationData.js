@@ -50,6 +50,7 @@ export default function useApplicationData(initial) {
   const SET_INTERVIEW = "SET_INTERVIEW";
 
   const ws = useRef(null);
+  const wsURL = process.env.REACT_APP_WEBSOCKET_URL || "ws://localhost:8001";
 
   useEffect(() => {
     Promise.all([
@@ -77,7 +78,7 @@ export default function useApplicationData(initial) {
   }, []);
 
   useEffect(() => {
-    ws.current = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    ws.current = new WebSocket(wsURL);
     ws.current.onopen = () => {};
 
     return () => {
