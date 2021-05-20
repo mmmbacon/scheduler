@@ -39,3 +39,9 @@ Editing a User:
 
 Deleting a User:
 ![Scheduler3](https://user-images.githubusercontent.com/8649801/118921629-bbab5c00-b8f5-11eb-88e3-001e72f32604.gif)
+
+Storybook:
+![Scheduler4](https://user-images.githubusercontent.com/8649801/118924503-69206e80-b8fa-11eb-8d7f-84e625e4a582.gif)
+
+Integrated Testing Coverage Reporting with Jest:
+![image](https://user-images.githubusercontent.com/8649801/118924551-7dfd0200-b8fa-11eb-8ba3-a3b400258c09.png)
