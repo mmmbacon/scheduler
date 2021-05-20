@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./styles.scss";
 import "../../hooks/useVisualMode";
 
@@ -55,20 +55,25 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  useEffect(() => {
+    if (mode === "EMPTY" && props.interview) {
+      transition("SHOW");
+    }
+    if (mode === "SHOW" && !props.interview) {
+      transition("EMPTY");
+    }
+  }); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === SHOW && (
+      {mode === SHOW && props.interview && (
         <Show
-          student={props.interview && props.interview.student}
-          interviewer={props.interview && props.interview.interviewer}
-          onDelete={() => {
-            transition(CONFIRM);
-          }}
-          onEdit={() => {
-            transition(EDIT);
-          }}
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+          onDelete={() => transition(CONFIRM)}
+          onEdit={() => transition(EDIT)}
         />
       )}
       {mode === CREATE && (

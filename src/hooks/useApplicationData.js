@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 
 import { getSpotsForDay, getDayIndex } from "../helpers/selectors";
@@ -34,6 +34,8 @@ export default function useApplicationData(initial) {
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
 
+  const ws = useRef(null);
+
   useEffect(() => {
     Promise.all([
       //Fetch days
@@ -59,6 +61,53 @@ export default function useApplicationData(initial) {
     });
   }, []);
 
+  useEffect(() => {
+    ws.current = new WebSocket("ws://localhost:8001");
+    ws.current.onopen = () => {};
+
+    return () => {
+      ws.current.close();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!ws.current) return;
+    ws.current.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+
+      if (message.type === "SET_INTERVIEW") {
+        const dayIndex = getDayIndex(state, state.day);
+        const spots = getSpotsForDay(state, state.day);
+
+        //Update Appointment
+        //Create copy of selected appointment by ID
+        const appointment = {
+          ...state.appointments[message.id],
+          interview:
+            message.interview === null ? null : { ...message.interview },
+        };
+        const appointments = {
+          ...state.appointments,
+          [message.id]: appointment,
+        };
+
+        //Update Days
+        //Create copy of selected day by index
+        const day = {
+          ...state.days[dayIndex],
+          spots: spots - 1,
+        };
+        //Create copy of days and insert new day
+        const days = [...state.days];
+        days[dayIndex] = day;
+
+        dispatch({
+          type: SET_INTERVIEW,
+          value: { appointments: appointments, days: days },
+        });
+      }
+    };
+  });
   const setDay = function (day) {
     dispatch({ type: SET_DAY, value: day });
   };
