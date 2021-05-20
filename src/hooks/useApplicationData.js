@@ -5,8 +5,8 @@ import { getSpotsForDay, getDayIndex } from "../helpers/selectors";
 
 const reducer = function (state, action) {
   switch (action.type) {
-    case "SET_DAY":
-      return { ...state, day: action.value };
+    // case "SET_DAY":
+    //   return { ...state, day: action.value };
     case "SET_APPLICATION_DATA":
       return {
         ...state,
