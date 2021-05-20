@@ -29,3 +29,13 @@ npm test
 ```sh
 npm run storybook
 ```
+## Screenshots
+
+Adding a user:
+![Scheduler1](https://user-images.githubusercontent.com/8649801/118921614-b6e6a800-b8f5-11eb-984b-03b43e80180d.gif)
+
+Editing a User:
+![Scheduler2](https://user-images.githubusercontent.com/8649801/118921622-b9490200-b8f5-11eb-9e12-9ca8b781a53a.gif)
+
+Deleting a User:
+![Scheduler3](https://user-images.githubusercontent.com/8649801/118921629-bbab5c00-b8f5-11eb-88e3-001e72f32604.gif)
