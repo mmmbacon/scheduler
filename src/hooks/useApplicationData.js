@@ -100,7 +100,7 @@ export default function useApplicationData(initial) {
         //Create copy of selected day by index
         const day = {
           ...state.days[dayIndex],
-          spots: spots - 1,
+          spots: message.interview === null ? spots + 1 : spots - 1,
         };
         //Create copy of days and insert new day
         const days = [...state.days];
