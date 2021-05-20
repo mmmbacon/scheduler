@@ -67,7 +67,7 @@ export default function useApplicationData(initial) {
   }, []);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8001");
+    ws.current = new WebSocket(wsURL);
     ws.current.onopen = () => {};
 
     return () => {
